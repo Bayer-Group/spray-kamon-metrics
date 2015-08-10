@@ -1,0 +1,211 @@
+spray-kamon-metrics
+===================
+
+This library augments http://kamon.io/integrations/web-and-http-toolkits/spray/[`kamon-spray`] to make it provide more
+useful metrics.  In particular, it consists of two independent parts
+
+`KamonHttp`::
+  A drop-in replacement for Spray can’s `Http` IO extension with one that will automatically gather Spray server
+  metrics on a periodic basis and publish them to Kamon
+`TracingHttpService`::
+  A drop-in replacement for Spray routing’s `HttpService` trait that will provide more useful trace metrics
+
+
+Installation
+------------
+
+In order to use this library, you will need to add dependencies to your project:
+
+------------------------------------------------------------------------------
+libraryDependencies ++= Seq(
+  "com.monsanto.arch" %% "spray-kamon-metrics" % "0.1.0",
+  // optional: Needed for KamonHttp
+  "io.spray"          %% "spray-can"           % "1.3.2",
+  // optional: Needed for TracingHttpService
+  "io.spray"          %% "spray-routing"       % "1.3.2",
+)
+------------------------------------------------------------------------------
+
+Note that each of the Spray dependencies is optional and only required when you
+are using the corresponding functionality.
+
+Additionally, you will need to add JCenter to your resolver chain.
+
+------------------------------------------------------------------------------
+resolvers += Resolver.jcenterRepo
+------------------------------------------------------------------------------
+
+  
+`KamonHttp`
+-----------
+
+When you use `KamonHttp`, you will be able to retrieve the
+http://spray.io/documentation/1.2.3/spray-can/http-server/#server-statistics[Spray can server’s metrics] from Kamon.
+
+=== Use
+
+To use `KamonHttp`, just use it instead of Spray’s `Http` extension when binding a new server port.  For example,
+instead of:
+
+[source,scala]
+.Using Spray can directly
+----------------------------------------------------------------------------------------------------------------
+import akka.io.IO
+import spray.can.Http
+
+IO(Http) ! Http.Bind(myService, interface = "localhost", port = 80)
+----------------------------------------------------------------------------------------------------------------
+
+Do this:
+
+[source,scala]
+.Using `KamonHttp`
+----------------------------------------------------------------------------------------------------------------
+import akka.io.IO
+import com.monsanto.arch.kamon.spray.can.KamonHttp
+
+IO(KamonHttp) ! Http.Bind(myService, interface = "localhost", port = 80)
+----------------------------------------------------------------------------------------------------------------
+
+Everything else should just work just as it did before.  If the service successfully binds to a port, `KamonHttp` will
+begin polling it periodically to gather the server’s metrics.
+
+
+=== Published metrics
+
+All Spray can server metrics are published to the `spray-can-server` category with a name generated from the socket
+address and port, e.g. `localhost:80`.  The metrics that are published include:
+
+[horizontal]
+`connections`:: a counter tracking the number of connections to the server
+`open-connections`:: a histogram tracking the number of open connections at different points in time
+`max-open-connections`:: a counter tracking the maximum number of connections over the life of the server
+`requests`:: a counter tracking the number of requests to the server
+`open-requests`:: a histogram tracking the number of open requests at different points in time
+`max-open-requests`:: a counter tracking the maximum number of requests over the life of the server
+`uptime`:: a counter tracking the server uptime in nanoseconds
+
+Note that `max-open-connections`, `max-open-requests`, and `uptime` are not published as time-series data.
+
+
+=== Configuration
+
+The only configuration option available is at `spray.can.kamon.refresh-interval`, which controls how often Spray is
+queried for statistics.  Remember that the `KamonHttp`’s metrics are subject to Kamon’s filtering.
+
+
+`TracingHttpService`
+--------------------
+
+`kamon-spray` provides some valuable help in instrumenting Spray services, but falls short in a few areas:
+
+. It does not support putting things like the request method or path in tags
+. The default trace name is not very helpful
+. It does not properly track request timeouts
+
+=== Use
+
+To use this part of the library, simply replace any use of `HttpService, `HttpServiceActor`, or `HttpServiceBase`
+with a corresponding use of `TracingHttpService`, `TracingHttpServiceActor`, or `TracingHttpServiceBase`.  For example,
+instead of:
+
+[source,scala]
+.Using Spray routing directly
+----------------------------------------------------------------------------------------------------------------
+import spray.routing.HttpService
+
+class MyService extends HttpServiceActor {
+  def receive = runRoute {
+    path("ping") {
+      get {
+        complete("pong")
+      }
+    }
+  }
+}
+----------------------------------------------------------------------------------------------------------------
+
+Do this:
+
+[source,scala]
+.Using `TracingHttpService`
+----------------------------------------------------------------------------------------------------------------
+import com.monsanto.arch.kamon.spray.routing.HttpService
+
+class MyService extends TracingHttpServiceActor {
+  def receive = runRoute {
+    path("ping") {
+      get {
+        complete("pong")
+      }
+    }
+  }
+}
+----------------------------------------------------------------------------------------------------------------
+
+It’s that easy.
+
+
+=== Published metrics
+
+By using the `TracingHttpService`, you get the following features:
+
+* Improved default trace names
+* Improved per-request metrics
+
+==== Improved default trace names
+
+Now, instead of defaulting to `UnnamedTrace`, traces will be generated with a name derived from the request method and
+path.  For example, a `GET` request to `/ping` will result in the name `GET /ping`.
+
+NOTE: Since `TracingHttpService` set the Kamon trace name, using a name generator will not have any effect.  If this
+is an issue for you, please open an issue.  Remember that you can always overwrite the trace name with the `traceName`
+directive, which is what upstream wants you to do, anyway.
+
+==== Improved per-request metrics
+
+Now, each request that is processed by your server will get added to a histogram called
+`spray-service-response-duration`.  The following tags are added to each record:
+
+[horizontal]
+`method`:: the method from the request
+`path`:: the path from the request
+`status_code`:: the integer value of the status code sent in the response
+`timed_out`:: whether or not a particular response is considered to have timed out
+
+[NOTE]
+.About timeouts 
+=====================================================================================================================
+The way that Spray handles timeouts is somewhat annoying.  When a particular request times out, Spray creates a new
+request that get processed specially.  This means that in the server, the original request still runs to completion.
+Meanwhile, the request that actually goes out to the client is void of any context from the original request.
+
+As a result, we rely on a couple of heuristics to try to generate the most useful data:
+
+. If a request takes longer than the configured request timeout, it is marked as `timed_out` in its tags even though it
+  is possible that it might still be delivered to the client as an actual result.  As such, it is possible that some
+  metrics marked as `timed_out` could possibly be false positives.
+. If a request times out, we do not know the exact amount of time that had elapsed since the initial request came in.
+  As a result, it is impossible to know exactly how long it has been before a response has finally been created for the
+  client.  The duration recorded for timeout responses is the amount of time to generate the timeout response plus
+  request timeout.
+  
+In summary, any request that times out should result in two values: one for the response that times out (marked
+`timed_out`) and one for the timeout response (not `timed_out`, but by default will have a `status_code` of 500).
+Both of these values a recorded so that you can filter on the `timed_out` label to get an idea of both which responses
+are timing out and by how much.
+=====================================================================================================================
+
+=== Configuration
+
+There is no configuration available for `TracingHttpService`.
+
+
+Future work
+-----------
+
+Possible future work for this library includes:
+
+* Better handling of request timeouts in `TracingHttpService`
+* Integration of these metrics into the `kamon-spray` project (requiring replacing drop-in replacements with AspectJ
+  instrumentation)
