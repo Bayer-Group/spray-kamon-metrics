@@ -18,7 +18,7 @@ In order to use this library, you will need to add dependencies to your project:
 
 ------------------------------------------------------------------------------
 libraryDependencies ++= Seq(
-  "com.monsanto.arch" %% "spray-kamon-metrics" % "0.1.0",
+  "com.monsanto.arch" %% "spray-kamon-metrics" % "0.1.1",
   // optional: Needed for KamonHttp
   "io.spray"          %% "spray-can"           % "1.3.2",
   // optional: Needed for TracingHttpService
