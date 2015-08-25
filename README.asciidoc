@@ -1,6 +1,8 @@
 spray-kamon-metrics
 ===================
 
+image:https://travis-ci.org/MonsantoCo/spray-kamon-metrics.svg["Build Status", link="https://travis-ci.org/MonsantoCo/spray-kamon-metrics"] image:https://coveralls.io/repos/MonsantoCo/spray-kamon-metrics/badge.svg?branch=master&service=github["Coverage Status", link="https://coveralls.io/github/MonsantoCo/spray-kamon-metrics?branch=master"]
+
 This library augments http://kamon.io/integrations/web-and-http-toolkits/spray/[`kamon-spray`] to make it provide more
 useful metrics.  In particular, it consists of two independent parts
 
