@@ -36,7 +36,6 @@ trait TracingHttpServiceBase extends Directives {
     mapRequestContext { ctx: RequestContext ⇒
       val path = ctx.request.uri.path.toString()
       val method = ctx.request.method.name
-      Tracer.currentContext.rename(s"$method $path")
       val start = System.nanoTime()
       val tagBuilder = Map.newBuilder[String, String]
       tagBuilder += "path" → path

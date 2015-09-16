@@ -102,7 +102,6 @@ queried for statistics.  Remember that the `KamonHttp`’s metrics are subject t
 `kamon-spray` provides some valuable help in instrumenting Spray services, but falls short in a few areas:
 
 . It does not support putting things like the request method or path in tags
-. The default trace name is not very helpful
 . It does not properly track request timeouts
 
 === Use
@@ -150,24 +149,9 @@ It’s that easy.
 
 === Published metrics
 
-By using the `TracingHttpService`, you get the following features:
-
-* Improved default trace names
-* Improved per-request metrics
-
-==== Improved default trace names
-
-Now, instead of defaulting to `UnnamedTrace`, traces will be generated with a name derived from the request method and
-path.  For example, a `GET` request to `/ping` will result in the name `GET /ping`.
-
-NOTE: Since `TracingHttpService` set the Kamon trace name, using a name generator will not have any effect.  If this
-is an issue for you, please open an issue.  Remember that you can always overwrite the trace name with the `traceName`
-directive, which is what upstream wants you to do, anyway.
-
-==== Improved per-request metrics
-
-Now, each request that is processed by your server will get added to a histogram called
-`spray-service-response-duration`.  The following tags are added to each record:
+Now, each request that is processed by your server will add to a histogram
+called `spray-service-response-duration`.  The following tags are added to each
+record:
 
 [horizontal]
 `method`:: the method from the request
