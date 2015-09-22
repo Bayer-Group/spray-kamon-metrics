@@ -4,7 +4,6 @@ import akka.actor.{Actor, ActorContext, ActorRefFactory}
 import akka.io.Tcp
 import kamon.Kamon
 import kamon.metric.instrument.Time
-import kamon.trace.Tracer
 import spray.can.server.ServerSettings
 import spray.http.{HttpRequest, StatusCodes, Timedout}
 import spray.routing._
@@ -22,6 +21,11 @@ trait TracingHttpServiceBase extends Directives {
               (implicit eh: ExceptionHandler, rh: RejectionHandler, ac: ActorContext, rs: RoutingSettings,
                log: LoggingContext): Actor.Receive =
     runRoute(route, isTimeout = false)
+
+  /** ‘Seals’ a route by wrapping it with exception handling and rejection conversion.  Note that this method does
+    * apply any Kamon instrumentation.
+    */
+  def sealRoute(route: Route)(implicit eh: ExceptionHandler, rh: RejectionHandler): Route = HttpService.sealRoute(route)
 
   /** ‘Seals’ a route by wrapping it with exception handling and rejection conversion.  This also takes care of adding
     * the necessary Kamon instrumentation.
@@ -92,7 +96,7 @@ trait TracingHttpServiceBase extends Directives {
       case request: HttpRequest ⇒
         val ctx = RequestContext(request, ac.sender(), request.uri.path).withDefaultSender(ac.self)
         runSealedRoute(ctx)
-      case ctx: RequestContext ⇒ runSealedRoute(ctx)
+      case ctx: RequestContext ⇒ sealRoute(route)(eh, rh)(ctx)
       case Tcp.Connected(remote, local) ⇒
         ac.sender() ! Tcp.Register(ac.self)
       case x: Tcp.ConnectionClosed ⇒
