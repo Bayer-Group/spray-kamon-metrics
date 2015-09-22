@@ -20,6 +20,7 @@ val kamonVersion = "0.5.1"
 val sprayVersion = "1.3.2"
 
 libraryDependencies ++= Seq(
+  "com.typesafe"        % "config"           % "1.3.0",
   "io.kamon"           %% "kamon-core"       % kamonVersion,
   "io.spray"           %% "spray-can"        % sprayVersion  % "provided",
   "io.spray"           %% "spray-routing"    % sprayVersion  % "provided",
