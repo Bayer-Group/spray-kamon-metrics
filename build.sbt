@@ -1,6 +1,10 @@
 name := "spray-kamon-metrics"
 
+homepage := Some(url("https://monsantoco.github.io/spray-kamon-metrics"))
+
 organization := "com.monsanto.arch"
+
+organizationHomepage := Some(url("http://engineering.monsanto.com/"))
 
 startYear := Some(2015)
 
