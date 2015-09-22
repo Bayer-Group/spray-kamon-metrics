@@ -15,8 +15,8 @@ scalacOptions ++= Seq(
   "-unchecked"
 )
 
-val akkaVersion = "2.3.12"
-val kamonVersion = "0.5.0"
+val akkaVersion = "2.3.14"
+val kamonVersion = "0.5.1"
 val sprayVersion = "1.3.2"
 
 libraryDependencies ++= Seq(
