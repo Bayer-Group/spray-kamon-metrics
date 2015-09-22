@@ -1,4 +1,0 @@
-spray-kamon-metrics
-===================
-
-Coming soon…
