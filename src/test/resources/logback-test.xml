@@ -1,0 +1,13 @@
+<configuration>
+    <appender name="test-log" class="ch.qos.logback.core.FileAppender">
+        <file>${TARGET_DIR}/test.log</file>
+        <encoder>
+            <pattern>%d %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="test-log" />
+    </root>
+</configuration>

@@ -20,11 +20,13 @@ val kamonVersion = "0.5.1"
 val sprayVersion = "1.3.2"
 
 libraryDependencies ++= Seq(
-  "io.kamon"           %% "kamon-core"    % kamonVersion,
-  "io.spray"           %% "spray-can"     % sprayVersion  % "provided",
-  "io.spray"           %% "spray-routing" % sprayVersion  % "provided",
-  "org.scalatest"      %% "scalatest"     % "2.2.4"       % "test",
-  "com.typesafe.akka"  %% "akka-testkit"  % akkaVersion   % "test"
+  "io.kamon"           %% "kamon-core"       % kamonVersion,
+  "io.spray"           %% "spray-can"        % sprayVersion  % "provided",
+  "io.spray"           %% "spray-routing"    % sprayVersion  % "provided",
+  "org.scalatest"      %% "scalatest"        % "2.2.4"       % "test",
+  "ch.qos.logback"      % "logback-classic"  % "1.1.3"       % "test",
+  "com.typesafe.akka"  %% "akka-slf4j"       % akkaVersion   % "test",
+  "com.typesafe.akka"  %% "akka-testkit"     % akkaVersion   % "test"
 )
 
 dependencyOverrides := Set(
@@ -35,6 +37,8 @@ dependencyOverrides := Set(
 )
 
 fork in Test := true
+
+javaOptions in Test += s"-DTARGET_DIR=${(target in Test).value.absolutePath}"
 
 // We have to ensure that Kamon starts/stops serially
 parallelExecution in Test := false
