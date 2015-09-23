@@ -16,3 +16,8 @@ include::../../README.asciidoc[tags=preamble]
   comprehensive documentation for using the library.
 * API documentation
 ** link:api/latest[latest]
+** link:api/0.1.2[0.1.2]
+
+== Release notes
+
+include::../../release-notes.asciidoc[tags=release-notes]
