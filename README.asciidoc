@@ -1,8 +1,11 @@
 spray-kamon-metrics
 ===================
 
+// tag::status-badges[]
 image:https://travis-ci.org/MonsantoCo/spray-kamon-metrics.svg["Build Status", link="https://travis-ci.org/MonsantoCo/spray-kamon-metrics"] image:https://coveralls.io/repos/MonsantoCo/spray-kamon-metrics/badge.svg?branch=master&service=github["Coverage Status", link="https://coveralls.io/github/MonsantoCo/spray-kamon-metrics?branch=master"]
+// end::status-badges[]
 
+// tag::preamble[]
 This library augments http://kamon.io/integrations/web-and-http-toolkits/spray/[`kamon-spray`] to make it provide more
 useful metrics.  In particular, it consists of two independent parts
 
@@ -11,6 +14,7 @@ useful metrics.  In particular, it consists of two independent parts
   metrics on a periodic basis and publish them to Kamon
 `TracingHttpService`::
   A drop-in replacement for Spray routing’s `HttpService` trait that will provide more useful trace metrics
+// end::preamble[]
 
 
 Installation

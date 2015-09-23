@@ -1,0 +1,18 @@
+spray-kamon-metrics: Better Kamon metrics for your Spray services
+=================================================================
+Daniel Solano_Gómez
+:description: The spray-kamon-metrics library augments kamon-spray to make it provide more useful metrics, \
+particularly by providing Spray can server metrics and better Spray service response metrics.
+:keywords: kamon, metrics, spray, scala
+
+
+include::../../README.asciidoc[tags=status-badges]
+
+include::../../README.asciidoc[tags=preamble]
+
+== Documentation
+
+* The https://github.com/MonsantoCo/spray-kamon-metrics/blob/master/README.asciidoc[README] on GitHub contains the most
+  comprehensive documentation for using the library.
+* API documentation
+** link:api/latest[latest]
