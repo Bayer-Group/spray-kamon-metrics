@@ -17,6 +17,7 @@ include::../../README.asciidoc[tags=preamble]
 * API documentation
 ** link:api/latest[latest]
 ** link:api/0.1.2[0.1.2]
+* Blog post: http://engineering.monsanto.com/2015/09/24/better-spray-metrics-with-kamon/[Better Spray metrics with Kamon]
 
 == Release notes
 
