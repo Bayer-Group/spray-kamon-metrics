@@ -69,6 +69,7 @@ Do this:
 ----------------------------------------------------------------------------------------------------------------
 import akka.io.IO
 import com.monsanto.arch.kamon.spray.can.KamonHttp
+import spray.can.Http
 
 IO(KamonHttp) ! Http.Bind(myService, interface = "localhost", port = 80)
 ----------------------------------------------------------------------------------------------------------------
