@@ -6,7 +6,9 @@ spray-kamon-metrics: release notes
 
 === 0.1.3-SNAPSHOT
 
-* Upgrade to Spray 1.3.3
+* Dependency updates:
+** Kamon 0.5.2
+** Spray 1.3.3
 
 === 0.1.2 (22 Sep 2015)
 

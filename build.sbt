@@ -20,7 +20,7 @@ scalacOptions ++= Seq(
 )
 
 val akkaVersion = "2.3.14"
-val kamonVersion = "0.5.1"
+val kamonVersion = "0.5.2"
 val sprayVersion = "1.3.3"
 
 libraryDependencies ++= Seq(
