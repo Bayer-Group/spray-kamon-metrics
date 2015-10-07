@@ -60,7 +60,7 @@ ghpages.settings
 
 git.remoteRepo := "git@github.com:MonsantoCo/spray-kamon-metrics.git"
 
-site.includeScaladoc("api/latest")
+site.includeScaladoc("api/snapshot")
 
 apiMappingsScala := Map(
   ("com.typesafe.akka", "akka-actor") → "http://doc.akka.io/api/akka/%s"
