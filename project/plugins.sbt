@@ -6,6 +6,6 @@ addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.0.0")
 
 addSbtPlugin("me.lessis" % "bintray-sbt" % "0.3.0")
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-site" % "0.8.1")
+addSbtPlugin("com.typesafe.sbt" % "sbt-site" % "0.8.2")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-ghpages" % "0.5.4")

@@ -124,6 +124,4 @@ doc in Compile <<= (doc in Compile) map { target ⇒
 
 apiURL := Some(url(s"https://monsantoco.github.io/spray-kamon-metrics/api/${(version in ThisBuild).value}"))
 
-AsciidoctorSupport.settings
-
-site.addMappingsToSiteDir(mappings in AsciidoctorSupport.Asciidoctor, "")
+site.asciidoctorSupport()
