@@ -99,7 +99,7 @@ class SprayMonitorSpec(_system: ActorSystem) extends TestKit(_system) with WordS
           monitor ! Identify(1)
           expectMsgType[ActorIdentity]
           val maybeMetrics = Kamon.metrics.find(metricsName, SprayServerMetrics.category)
-          maybeMetrics shouldBe defined
+          maybeMetrics should be (defined)
         }
       }
     }
@@ -133,7 +133,7 @@ class SprayMonitorSpec(_system: ActorSystem) extends TestKit(_system) with WordS
           monitor ! Identify(1)
           expectMsgType[ActorIdentity]
           val maybeMetrics = Kamon.metrics.find(metricsName, SprayServerMetrics.category)
-          maybeMetrics shouldBe defined
+          maybeMetrics should be (defined)
           val typedMetrics = maybeMetrics.get.asInstanceOf[SprayServerMetrics]
           typedMetrics.stats shouldBe stats
         }
