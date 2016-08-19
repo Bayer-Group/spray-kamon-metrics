@@ -16,6 +16,7 @@ include::../../README.asciidoc[tags=preamble]
   comprehensive documentation for using the library.
 * API documentation
 ** link:api/snapshot[snapshot]
+** link:api/0.1.3[0.1.3]
 ** link:api/0.1.2[0.1.2]
 * Blog post: http://engineering.monsanto.com/2015/09/24/better-spray-metrics-with-kamon/[Better Spray metrics with Kamon]
 

@@ -24,7 +24,7 @@ In order to use this library, you will need to add dependencies to your project:
 
 ------------------------------------------------------------------------------
 libraryDependencies ++= Seq(
-  "com.monsanto.arch" %% "spray-kamon-metrics" % "0.1.2",
+  "com.monsanto.arch" %% "spray-kamon-metrics" % "0.1.3",
   // optional: Needed for KamonHttp
   "io.spray"          %% "spray-can"           % "1.3.3",
   // optional: Needed for TracingHttpService
@@ -41,12 +41,12 @@ Additionally, you will need to add JCenter to your resolver chain.
 resolvers += Resolver.jcenterRepo
 ------------------------------------------------------------------------------
 
-  
+
 `KamonHttp`
 -----------
 
 When you use `KamonHttp`, you will be able to retrieve the
-http://spray.io/documentation/1.2.3/spray-can/http-server/#server-statistics[Spray can server’s metrics] from Kamon.
+http://spray.io/documentation/1.2.3/Spray-can/http-server/#server-statistics[Spray can server’s metrics] from Kamon.
 
 === Use
 
@@ -165,7 +165,7 @@ record:
 `timed_out`:: whether or not a particular response is considered to have timed out
 
 [NOTE]
-.About timeouts 
+.About timeouts
 =====================================================================================================================
 The way that Spray handles timeouts is somewhat annoying.  When a particular request times out, Spray creates a new
 request that get processed specially.  This means that in the server, the original request still runs to completion.
@@ -180,7 +180,7 @@ As a result, we rely on a couple of heuristics to try to generate the most usefu
   As a result, it is impossible to know exactly how long it has been before a response has finally been created for the
   client.  The duration recorded for timeout responses is the amount of time to generate the timeout response plus
   request timeout.
-  
+
 In summary, any request that times out should result in two values: one for the response that times out (marked
 `timed_out`) and one for the timeout response (not `timed_out`, but by default will have a `status_code` of 500).
 Both of these values a recorded so that you can filter on the `timed_out` label to get an idea of both which responses
