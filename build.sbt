@@ -12,15 +12,15 @@ description := "Better Kamon metrics for Spray services"
 
 licenses += "BSD" → url("http://opensource.org/licenses/BSD-3-Clause")
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.11.8"
 
 scalacOptions ++= Seq(
   "-deprecation",
   "-unchecked"
 )
 
-val akkaVersion = "2.3.14"
-val kamonVersion = "0.5.2"
+val akkaVersion = "2.4.8"
+val kamonVersion = "0.6.2"
 val sprayVersion = "1.3.3"
 
 libraryDependencies ++= Seq(
@@ -28,8 +28,8 @@ libraryDependencies ++= Seq(
   "io.kamon"           %% "kamon-core"       % kamonVersion,
   "io.spray"           %% "spray-can"        % sprayVersion  % "provided",
   "io.spray"           %% "spray-routing"    % sprayVersion  % "provided",
-  "org.scalatest"      %% "scalatest"        % "2.2.4"       % "test",
-  "ch.qos.logback"      % "logback-classic"  % "1.1.3"       % "test",
+  "org.scalatest"      %% "scalatest"        % "3.0.0"       % "test",
+  "ch.qos.logback"      % "logback-classic"  % "1.1.7"       % "test",
   "com.typesafe.akka"  %% "akka-slf4j"       % akkaVersion   % "test",
   "com.typesafe.akka"  %% "akka-testkit"     % akkaVersion   % "test"
 )
@@ -54,13 +54,9 @@ bintrayPackageLabels := Seq("kamon", "spray", "metrics")
 
 bintrayVcsUrl := Some("https://github.com/MonsantoCo/spray-kamon-metrics")
 
-site.settings
-
 ghpages.settings
 
 git.remoteRepo := "git@github.com:MonsantoCo/spray-kamon-metrics.git"
-
-site.includeScaladoc("api/snapshot")
 
 apiMappingsScala := Map(
   ("com.typesafe.akka", "akka-actor") → "http://doc.akka.io/api/akka/%s"
@@ -72,4 +68,8 @@ apiMappingsJava := Map(
 
 apiURL := Some(url(s"https://monsantoco.github.io/spray-kamon-metrics/api/${(version in ThisBuild).value}"))
 
-site.asciidoctorSupport()
+enablePlugins(AsciidoctorPlugin)
+
+enablePlugins(SiteScaladocPlugin)
+
+siteSubdirName in SiteScaladoc := "api/snapshot"
