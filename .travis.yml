@@ -1,9 +1,7 @@
 language: scala
 jdk:
   - oraclejdk8
-script: "sbt clean coverage test"
+script:
+  - sbt clean coverage test coverageReport
 after_success:
-  - ln -s src/main/scala/com ./
-  - ln -s src/main/scala/kamon ./
   - sbt coveralls
-  - rm -f ./com ./kamon
