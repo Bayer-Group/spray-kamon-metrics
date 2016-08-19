@@ -53,7 +53,7 @@ class TracingHttpServiceSpec(_system: ActorSystem) extends TestKit(_system) with
         )
 
         val entity = Kamon.metrics.find("spray-service-response-duration", Histogram, tags)
-        entity shouldBe defined
+        entity should be (defined)
         val collectionContext = Kamon.metrics.buildDefaultCollectionContext
         val entitySnapshot = entity.get.collect(collectionContext)
         val snapshot = entitySnapshot.histogram(SingleInstrumentEntityRecorder.Histogram).get

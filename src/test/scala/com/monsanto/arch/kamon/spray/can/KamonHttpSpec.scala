@@ -48,7 +48,7 @@ class KamonHttpSpec(_system: ActorSystem) extends TestKit(_system) with WordSpec
     // wait for metrics to update
     Thread.sleep(RefreshIntervalMillis * 3)
     val maybeMetrics = Kamon.metrics.find(entity)
-    maybeMetrics shouldBe defined
+    maybeMetrics should be (defined)
     val stats = maybeMetrics.get.asInstanceOf[SprayServerMetrics].stats
 
     stats.uptime.toNanos should be > 0L
