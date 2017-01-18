@@ -19,26 +19,23 @@ scalacOptions ++= Seq(
   "-unchecked"
 )
 
-val akkaVersion = "2.4.8"
-val kamonVersion = "0.6.2"
-val sprayVersion = "1.3.3"
+val akkaVersion = "2.4.16"
+val kamonVersion = "0.6.5"
+val sprayVersion = "1.3.4"
 
 libraryDependencies ++= Seq(
-  "com.typesafe"        % "config"           % "1.3.0",
+  "com.typesafe"        % "config"           % "1.3.1",
   "io.kamon"           %% "kamon-core"       % kamonVersion,
   "io.spray"           %% "spray-can"        % sprayVersion  % "provided",
   "io.spray"           %% "spray-routing"    % sprayVersion  % "provided",
-  "org.scalatest"      %% "scalatest"        % "3.0.0"       % "test",
-  "ch.qos.logback"      % "logback-classic"  % "1.1.7"       % "test",
+  "org.scalatest"      %% "scalatest"        % "3.0.1"       % "test",
+  "ch.qos.logback"      % "logback-classic"  % "1.1.8"       % "test",
   "com.typesafe.akka"  %% "akka-slf4j"       % akkaVersion   % "test",
   "com.typesafe.akka"  %% "akka-testkit"     % akkaVersion   % "test"
 )
 
 dependencyOverrides := Set(
-  "org.scala-lang"          % "scala-library" % scalaVersion.value,
-  "org.scala-lang"          % "scala-reflect" % scalaVersion.value,
-  "org.scala-lang.modules" %% "scala-xml"     % "1.0.4",
-  "com.typesafe.akka"      %% "akka-actor"    % akkaVersion
+  "com.typesafe"        % "config"           % "1.3.1"
 )
 
 fork in Test := true
