@@ -4,7 +4,7 @@ spray-kamon-metrics: release notes
 
 // tag::release-notes[]
 
-=== 0.1.4 (18 Aug 2016)
+=== 0.1.4 (18 Jan 2017)
 
 * Dependency updates:
 ** Akka 2.4.16
