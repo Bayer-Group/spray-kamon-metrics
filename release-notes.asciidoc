@@ -4,6 +4,13 @@ spray-kamon-metrics: release notes
 
 // tag::release-notes[]
 
+=== 0.1.5 (unrelased)
+
+* Dependency updates:
+** Scala 2.11.11
+** Akka 2.4.17
+** Kamon 0.6.6
+
 === 0.1.4 (18 Jan 2017)
 
 * Dependency updates:
